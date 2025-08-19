@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="location.href = '/create'">+ Add Item</button>
+
+    <div id="container-tasks">
+        {% for item in data %}
+            <div class="Item">
+                <div class="image-container"><img src="{{ item.image.url }}" alt="Item Image"></div>
+                <p><strong>Item Catagory:</strong> {{ item.item }}</p>
+                <p><strong>Task created:</strong> {{ item.listed_on }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
