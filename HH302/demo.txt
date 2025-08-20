@@ -1,0 +1,3 @@
+email: abc@gmail.com
+phone: 1234567890
+pass: demo@12345
