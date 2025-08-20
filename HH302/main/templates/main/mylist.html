@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <button onclick="location.href = '/create'">+ Add Item</button>
+    <button onclick="location.href = '/home/mylist/create'">+ Add Item</button>
 
     <div id="container-tasks">
         {% for item in data %}
@@ -15,6 +15,13 @@
                 <p><strong>Item Catagory:</strong> {{ item.item }}</p>
                 <p><strong>Task created:</strong> {{ item.listed_on }}</p>
             </div>
+
+        {% empty %}
+
+            <div class="empty">
+                <p>No items are there in list</p>
+            </div>
+
         {% endfor %}
     </div>
 </body>

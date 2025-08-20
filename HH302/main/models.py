@@ -5,7 +5,6 @@ class Phone(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone_no = models.CharField(max_length=10)
 
-        
 
 class Item(models.Model):
     catagory = models.CharField(max_length=50)
@@ -19,4 +18,3 @@ class Recycleable(models.Model):
     listed_on = models.DateTimeField(auto_now_add=True)
     dropped_off = models.BooleanField(default=False)
     
-
