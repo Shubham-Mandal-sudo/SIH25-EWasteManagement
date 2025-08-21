@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from .models import Recycleable, Phone
+import uuid
+import os
 
 def hero_view(request):
     return render(request, 'main/hero.html')
@@ -52,14 +54,38 @@ def home_view(request):
 @login_required
 def list_view(request):
     items = Recycleable.objects.filter(user=request.user)
-    return render(request, 'main/mylist.html')
+    return render(request, 'main/mylist.html',{'data':items})
 
 @login_required
 def create_item(request):
-    return render(request, 'main/form.html')
+    if request.method == 'POST':
+        quantity = request.POST.get("quantity")
+        image = request.FILES.get('image')
 
-#@login_required
-#def save_item(request):
+        if image:
+            # Generate a unique filename
+            ext = image.name.split('.')[-1]  # Extract the file extension
+            filename = f"{uuid.uuid4().hex}.{ext}"  # Generate a unique filename
+
+            # Save the image to the file system
+            # You can use the Django storage system or manually save the file
+            media_root = os.path.join('media', 'images')
+            if not os.path.exists(media_root):
+                os.makedirs(media_root)
+            image_path = os.path.join(media_root, filename)
+            
+            with open(image_path, 'wb') as f:
+                for chunk in image.chunks():
+                    f.write(chunk)
+
+            # Save the image metadata in the database
+            form_save = Recycleable(user = request.user, image=f"images/{filename}", quantity = quantity)
+            form_save.save()
+
+            return redirect('list_view')
+    else:
+        return render(request, 'main/form.html')
+
 
 @staff_member_required
 def recycler_home(request):

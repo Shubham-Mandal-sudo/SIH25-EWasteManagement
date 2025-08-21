@@ -144,7 +144,7 @@
         <main>
             <div class="section">
                 <h2>Add Item</h2>
-                <form method="post" action="{% url 'save_item' %}">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     
                     <label for="image">Image Recognition:</label>
