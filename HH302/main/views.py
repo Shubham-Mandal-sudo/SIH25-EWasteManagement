@@ -20,7 +20,7 @@ def login_view(request):
                 return redirect('recycler_home')
             return redirect('home')
         else:
-            return render(request, 'index.html', {'error': 'Invalid email id or password'})
+            return render(request, 'main/login.html', {'error': 'Invalid email id or password'})
     else:
         return render(request, 'main/login.html')
 
