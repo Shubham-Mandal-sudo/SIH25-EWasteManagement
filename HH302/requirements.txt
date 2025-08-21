@@ -1,1 +1,5 @@
-django-phonenumber-field
+pillow
+ultralytics
+roboflow
+requests
+inference-sdk

@@ -4,8 +4,26 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from .models import Recycleable, Phone
+from inference_sdk import InferenceHTTPClient
+from django.http import HttpResponse
 import uuid
 import os
+
+#Image Predictor
+def image_predicter(path):
+    CLIENT = InferenceHTTPClient(
+        api_url="https://serverless.roboflow.com",
+        api_key="x2P8cdyvpvNtakN5oHZC"   # paste your Roboflow API key
+    )
+
+    # Run inference on an image
+    result = CLIENT.infer(
+        path,   # replace with the path to your local image
+        model_id="e-waste-dataset-r0ojc/43"  # model name and version
+    )
+
+    return(result['predictions'][0]['class'])
+
 
 def hero_view(request):
     return render(request, 'main/hero.html')
@@ -22,7 +40,7 @@ def login_view(request):
                 return redirect('recycler_home')
             return redirect('home')
         else:
-            return render(request, 'index.html', {'error': 'Invalid email id or password'})
+            return render(request, 'main/login.html', {'error': 'Invalid email id or password'})
     else:
         return render(request, 'main/login.html')
 
@@ -39,7 +57,7 @@ def signup_view(request):
             login(request, user)
             return redirect('home')
         except:
-            return render(request, 'index.html', {'error': 'An error occurred'})
+            return render(request, 'main/signup.html', {'error': 'An error occurred'})
     else:
         return render(request, 'main/signup.html')
 
@@ -68,7 +86,6 @@ def create_item(request):
             filename = f"{uuid.uuid4().hex}.{ext}"  # Generate a unique filename
 
             # Save the image to the file system
-            # You can use the Django storage system or manually save the file
             media_root = os.path.join('media', 'images')
             if not os.path.exists(media_root):
                 os.makedirs(media_root)
@@ -81,8 +98,9 @@ def create_item(request):
             # Save the image metadata in the database
             form_save = Recycleable(user = request.user, image=f"images/{filename}", quantity = quantity)
             form_save.save()
-
-            return redirect('list_view')
+            prediction = image_predicter(f"images/{filename}")
+            html_content = "<h2>The given image is of a "+prediction+"</h2>"
+            return HttpResponse(html_content)
     else:
         return render(request, 'main/form.html')
 
