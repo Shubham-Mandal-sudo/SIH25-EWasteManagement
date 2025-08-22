@@ -98,9 +98,10 @@ def create_item(request):
             # Save the image metadata in the database
             form_save = Recycleable(user = request.user, image=f"images/{filename}", quantity = quantity)
             form_save.save()
-            prediction = image_predicter(f"images/{filename}")
-            html_content = "<h2>The given image is of a "+prediction+"</h2>"
-            return HttpResponse(html_content)
+            # prediction = image_predicter(f"images/{filename}")
+            # html_content = "<h2>The given image is of a "+prediction+"</h2>"
+            # return HttpResponse(html_content)
+            return redirect('list_view')
     else:
         return render(request, 'main/form.html')
 

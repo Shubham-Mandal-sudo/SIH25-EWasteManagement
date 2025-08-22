@@ -3,26 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My List - Dark Theme</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #121212;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .add-btn {
+            padding: 10px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .add-btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Item Cards */
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #2a2a2a;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+        }
+
+        .image-container {
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #444;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-details h3 {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .item-details p {
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        /* Empty State */
+        .empty {
+            text-align: center;
+            color: #777;
+            font-size: 15px;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .image-container {
+                width: 100%;
+                height: 180px;
+            }
+
+            .item-details h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <button onclick="location.href = '/home/mylist/create'">+ Add Item</button>
+    <div class="container">
 
-    <div id="container-tasks">
-        {% for item in data %}
-            <div class="Item">
-                <div class="image-container"><img src="{{ item.image.url }}" alt="Item Image"></div>
-                <p><strong>Item Catagory:</strong> {{ item.item }}</p>
-                <p><strong>Task created:</strong> {{ item.listed_on }}</p>
-            </div>
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">Logo</div>
+            <button class="add-btn" onclick="location.href='/home/mylist/create'">+ Add Item</button>
+        </div>
 
-        {% empty %}
-
-            <div class="empty">
-                <p>No items are there in list</p>
-            </div>
-
-        {% endfor %}
+        <!-- Item List -->
+        <div id="container-tasks">
+            {% for item in data %}
+                <div class="item">
+                    <div class="image-container">
+                        <img src="{{ item.image.url }}" alt="Item Image">
+                    </div>
+                    <div class="item-details">
+                        <h3>{{ item.item }}</h3>
+                        <p>Content</p>
+                        <p><small>Listed on: {{ item.listed_on }}</small></p>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty">
+                    <p>No items are there in the list</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+
+    <script>
+        // Smooth scroll to top when new item added
+        document.querySelector(".add-btn").addEventListener("click", function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>

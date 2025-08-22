@@ -13,7 +13,7 @@ class Item(models.Model):
 
 class Recycleable(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='images/')
     quantity = models.ImageField(default=1)
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     listed_on = models.DateTimeField(auto_now_add=True)

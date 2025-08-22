@@ -5,25 +5,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #121212;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .nav-btn {
+            padding: 10px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Sections */
+        .section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            border-radius: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+        }
+
+        .section h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            color: #bbb;
+            font-size: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .section h2 {
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="logo">Logo</div>
-            <button class="nav-btn" onclick="location.href = '/home/mylist'">Recycle Item</button>
+            <button class="nav-btn" onclick="location.href='/home/mylist'">Recycle Item</button>
         </header>
         <main>
             <div class="section">
                 <h2>Dashboard</h2>
-                <p>Welcome to the Dashboard</p>
+                <p>Welcome to the Dashboard – view your recycling history here.</p>
             </div>
             <div class="section">
                 <h2>Awareness</h2>
-                <p>Learn about recycling and sustainability</p>
+                <p>Learn about recycling and sustainability practices to make an impact.</p>
             </div>
         </main>
     </div>
-    
+
+    <script>
+        // Example JS: smooth scroll to sections when clicked in future
+        document.querySelectorAll('.section').forEach(section => {
+            section.addEventListener('click', () => {
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
 </body>
 </html>
