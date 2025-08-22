@@ -1,34 +1,72 @@
-<!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Root variables */
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text-light: #ffffff;
+            --muted: #d1d5db;
+            --primary: #3498db;
+            --secondary: #27ae60;
+            --radius: 16px;
+            --shadow: 0 8px 30px rgba(0,0,0,0.25);
+            --background: #121212;
+            --container-bg: rgba(30, 30, 30, 0.8);
+        }
+
         /* Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background: #121212;
+            color: var(--text-light);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
+            align-items: center;
             padding: 20px;
-            color: #e0e0e0;
+            overflow: hidden;
+            position: relative;
         }
 
+        /* Animated background gradient */
+        body::before {
+            content: "";
+            position: absolute;
+            top:0; left:0; right:0; bottom:0;
+            background: radial-gradient(circle at 20% 30%, #1e3c72, transparent 60%),
+                        radial-gradient(circle at 80% 70%, #2a5298, transparent 60%),
+                        radial-gradient(circle at 50% 50%, #3498db, transparent 70%);
+            animation: moveBg 12s ease-in-out infinite alternate;
+            z-index:-1;
+        }
+
+        @keyframes moveBg {
+            0% { background-position: 20% 30%, 80% 70%, 50% 50%; }
+            100% { background-position: 30% 40%, 70% 60%, 60% 40%; }
+        }
+
+        /* Container */
         .container {
             width: 100%;
-            max-width: 700px;
-            background: #1e1e1e;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-            padding: 20px;
+            max-width: 800px;
+            backdrop-filter: blur(14px);
+            background: var(--container-bg);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            animation: fadeIn 1s ease-out;
         }
 
         /* Header */
@@ -36,68 +74,131 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.3s;
         }
 
         .logo {
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
             color: #fff;
         }
 
         .nav-btn {
-            padding: 10px 16px;
-            background: #007bff;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius);
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::after {
+            content: "";
+            position: absolute;
+            top:0; left:-100%; width:100%; height:100%;
+            background: rgba(255,255,255,0.25);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
         }
 
         .nav-btn:hover {
-            background: #0056b3;
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
         }
 
         /* Sections */
         .section {
-            background: #2a2a2a;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-            border-radius: 12px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+        }
+
+        .section:nth-child(1) {
+            animation-delay: 0.5s;
+        }
+
+        .section:nth-child(2) {
+            animation-delay: 0.7s;
         }
 
         .section:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
         .section h2 {
-            color: #fff;
-            margin-bottom: 10px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.5rem;
         }
 
         .section p {
-            color: #bbb;
-            font-size: 15px;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Responsive */
-        @media (max-width: 480px) {
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+
             .nav-btn {
-                padding: 8px 12px;
-                font-size: 14px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
             }
 
             .section {
-                padding: 15px;
+                padding: 20px;
             }
 
             .section h2 {
-                font-size: 18px;
+                font-size: 1.3rem;
+            }
+            
+            .section p {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -105,26 +206,62 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">Logo</div>
+            <div class="logo">E-Waste Tracker</div>
             <button class="nav-btn" onclick="location.href='/home/mylist'">Recycle Item</button>
         </header>
         <main>
             <div class="section">
                 <h2>Dashboard</h2>
-                <p>Welcome to the Dashboard – view your recycling history here.</p>
+                <p>Welcome to the Dashboard – view your recycling history and stats here. Track your impact and see how you're contributing to a sustainable future.</p>
             </div>
             <div class="section">
                 <h2>Awareness</h2>
-                <p>Learn about recycling and sustainability practices to make an impact.</p>
+                <p>Learn more about recycling and sustainability practices to make a greater impact. Discover how proper e-waste disposal benefits our environment.</p>
             </div>
         </main>
     </div>
 
     <script>
-        // Example JS: smooth scroll to sections when clicked in future
-        document.querySelectorAll('.section').forEach(section => {
-            section.addEventListener('click', () => {
-                section.scrollIntoView({ behavior: 'smooth' });
+        // Enhanced interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add subtle parallax effect to background based on mouse movement
+            document.addEventListener('mousemove', function(e) {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                
+                document.body.style.backgroundPosition = `
+                    ${50 + xAxis}% ${50 + yAxis}%, 
+                    ${50 - xAxis}% ${50 - yAxis}%, 
+                    ${50 + xAxis * 1.5}% ${50 + yAxis * 1.5}%
+                `;
+            });
+            
+            // Add click effect to sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+            
+            // Add ripple effect to button
+            const button = document.querySelector('.nav-btn');
+            button.addEventListener('click', function(e) {
+                const x = e.clientX - this.getBoundingClientRect().left;
+                const y = e.clientY - this.getBoundingClientRect().top;
+                
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
             });
         });
     </script>

@@ -4,141 +4,280 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Item</title>
-    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Global styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #121212;
-            color: #fff;
+        /* Root variables */
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text-light: #ffffff;
+            --muted: #d1d5db;
+            --primary: #3498db;
+            --secondary: #27ae60;
+            --accent: #ff4081;
+            --radius: 16px;
+            --shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+
+        /* Reset */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            color: var(--text-light);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background gradient */
+        body::before {
+            content: "";
+            position: absolute;
+            top:0; left:0; right:0; bottom:0;
+            background: radial-gradient(circle at 20% 30%, #1e3c72, transparent 60%),
+                        radial-gradient(circle at 80% 70%, #2a5298, transparent 60%),
+                        radial-gradient(circle at 50% 50%, #3498db, transparent 70%);
+            animation: moveBg 12s ease-in-out infinite alternate;
+            z-index:-1;
+        }
+
+        @keyframes moveBg {
+            0% { background-position: 20% 30%, 80% 70%, 50% 50%; }
+            100% { background-position: 30% 40%, 70% 60%, 60% 40%; }
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
-            padding: 20px;
-            background-color: #1e1e1e;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 700px;
+            backdrop-filter: blur(14px);
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            animation: fadeIn 1s ease-out;
         }
 
+        /* Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.3s;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff4081;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 64, 129, 0.7);
         }
 
         .nav-btn {
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
-            border: 1px solid #444;
-            border-radius: 5px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3498db, #4facfe);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
             cursor: pointer;
+            font-weight: 600;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .nav-btn::after {
+            content: "";
+            position: absolute;
+            top:0; left:-100%; width:100%; height:100%;
+            background: rgba(255,255,255,0.25);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
         }
 
         .nav-btn:hover {
-            background-color: #ff4081;
-            border-color: #ff4081;
-            box-shadow: 0 0 10px rgba(255, 64, 129, 0.7);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
         }
 
+        /* Main content */
         main {
             text-align: center;
         }
 
         .section {
-            background-color: #2c2c2c;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.1);
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.7s;
         }
 
         h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #ff4081;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: var(--text-light);
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+        }
+
+        form {
+            text-align: left;
         }
 
         label {
             display: block;
             margin-bottom: 10px;
-            font-size: 18px;
-            color: #ddd;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 500;
         }
 
         input[type="file"],
         input[type="number"] {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #333;
-            color: #fff;
-            border: 1px solid #444;
-            border-radius: 5px;
+            padding: 14px 18px;
+            margin: 10px 0 20px 0;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius);
             transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
         input[type="file"]:focus,
         input[type="number"]:focus {
-            border-color: #ff4081;
-            box-shadow: 0 0 5px rgba(255, 64, 129, 0.7);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.3);
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
         }
 
-        button[type="submit"] {
-            padding: 12px 24px;
-            background-color: #ff4081;
-            color: #fff;
-            font-size: 16px;
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, var(--accent), #e040fb);
+            color: white;
             border: none;
-            border-radius: 5px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-right: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
+        input[type="file"]::file-selector-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent), #e040fb);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button[type="submit"]::after {
+            content: "";
+            position: absolute;
+            top:0; left:-100%; width:100%; height:100%;
+            background: rgba(255,255,255,0.25);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        button[type="submit"]:hover::after {
+            left: 100%;
+        }
+
         button[type="submit"]:hover {
-            background-color: #e040fb;
-            box-shadow: 0 0 10px rgba(224, 64, 251, 0.7);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(224, 64, 251, 0.4);
         }
 
-        /* Glow effect for header and inputs */
-        .logo {
-            text-shadow: 0 0 8px #ff4081, 0 0 10px #ff4081;
-        }
-
-        /* Animation for the form */
-        form {
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-            animation-delay: 0.5s;
-        }
-
+        /* Animations */
         @keyframes fadeIn {
-            to {
-                opacity: 1;
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .section {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            input[type="file"],
+            input[type="number"] {
+                padding: 12px 15px;
             }
         }
     </style>
-
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">Logo</div>
+            <div class="logo">E-Waste Tracker</div>
             <button class="nav-btn" onclick="location.href = '/home'">Back to Dashboard</button>
         </header>
         <main>
@@ -158,5 +297,50 @@
             </div>
         </main>
     </div>
+
+    <script>
+        // Enhanced interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add subtle parallax effect to background based on mouse movement
+            document.addEventListener('mousemove', function(e) {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                
+                document.body.style.backgroundPosition = `
+                    ${50 + xAxis}% ${50 + yAxis}%, 
+                    ${50 - xAxis}% ${50 - yAxis}%, 
+                    ${50 + xAxis * 1.5}% ${50 + yAxis * 1.5}%
+                `;
+            });
+            
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const x = e.clientX - this.getBoundingClientRect().left;
+                    const y = e.clientY - this.getBoundingClientRect().top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+            
+            // Add file input styling enhancement
+            const fileInput = document.getElementById('image');
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    this.style.borderColor = 'var(--secondary)';
+                    this.style.boxShadow = '0 0 0 3px rgba(39, 174, 96, 0.3)';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

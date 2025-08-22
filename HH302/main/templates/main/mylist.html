@@ -3,31 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My List - Dark Theme</title>
+    <title>My List - Enhanced Theme</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Root variables */
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text-light: #ffffff;
+            --muted: #d1d5db;
+            --primary: #3498db;
+            --secondary: #27ae60;
+            --radius: 16px;
+            --shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+
         /* Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background: #121212;
+            color: var(--text-light);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             padding: 20px;
-            color: #e0e0e0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background gradient */
+        body::before {
+            content: "";
+            position: absolute;
+            top:0; left:0; right:0; bottom:0;
+            background: radial-gradient(circle at 20% 30%, #1e3c72, transparent 60%),
+                        radial-gradient(circle at 80% 70%, #2a5298, transparent 60%),
+                        radial-gradient(circle at 50% 50%, #3498db, transparent 70%);
+            animation: moveBg 12s ease-in-out infinite alternate;
+            z-index:-1;
+        }
+
+        @keyframes moveBg {
+            0% { background-position: 20% 30%, 80% 70%, 50% 50%; }
+            100% { background-position: 30% 40%, 70% 60%, 60% 40%; }
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
-            background: #1e1e1e;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-            padding: 20px;
+            max-width: 700px;
+            backdrop-filter: blur(14px);
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            animation: fadeIn 1s ease-out;
         }
 
         /* Header */
@@ -35,55 +70,99 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.3s;
         }
 
         .logo {
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
             color: #fff;
         }
 
         .add-btn {
-            padding: 10px 16px;
-            background: #007bff;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius);
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .add-btn::after {
+            content: "";
+            position: absolute;
+            top:0; left:-100%; width:100%; height:100%;
+            background: rgba(255,255,255,0.25);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .add-btn:hover::after {
+            left: 100%;
         }
 
         .add-btn:hover {
-            background: #0056b3;
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
         }
 
         /* Item Cards */
         .item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: #2a2a2a;
-            padding: 15px;
-            border: 1px solid #333;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            gap: 20px;
+            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+        }
+
+        .item:nth-child(1) {
+            animation-delay: 0.6s;
+        }
+
+        .item:nth-child(2) {
+            animation-delay: 0.8s;
+        }
+
+        .item:nth-child(3) {
+            animation-delay: 1.0s;
         }
 
         .item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
         .image-container {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             flex-shrink: 0;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            background: #444;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .item:hover .image-container {
+            transform: scale(1.05);
         }
 
         .image-container img {
@@ -97,48 +176,98 @@
         }
 
         .item-details h3 {
-            font-size: 16px;
+            font-size: 1.2rem;
             color: #fff;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .item-details p {
-            font-size: 14px;
-            color: #bbb;
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+
+        .item-details small {
+            color: #a7f3d0;
+            font-size: 0.8rem;
         }
 
         /* Empty State */
         .empty {
             text-align: center;
-            color: #777;
-            font-size: 15px;
-            padding: 20px;
+            color: var(--muted);
+            font-size: 1.1rem;
+            padding: 40px 20px;
+            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.1);
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Responsive */
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .add-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
             .item {
                 flex-direction: column;
                 align-items: flex-start;
+                text-align: center;
+                gap: 15px;
             }
 
             .image-container {
                 width: 100%;
                 height: 180px;
+                align-self: center;
+            }
+            
+            .item-details {
+                width: 100%;
             }
 
             .item-details h3 {
-                font-size: 18px;
+                font-size: 1.3rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-
         <!-- Header -->
         <div class="header">
-            <div class="logo">Logo</div>
+            <div class="logo">E-Waste Tracker</div>
             <button class="add-btn" onclick="location.href='/home/mylist/create'">+ Add Item</button>
         </div>
 
@@ -152,21 +281,63 @@
                     <div class="item-details">
                         <h3>{{ item.item }}</h3>
                         <p>Content</p>
-                        <p><small>Listed on: {{ item.listed_on }}</small></p>
+                        <small>Listed on: {{ item.listed_on }}</small>
                     </div>
                 </div>
             {% empty %}
                 <div class="empty">
-                    <p>No items are there in the list</p>
+                    <p>No items in your list yet</p>
                 </div>
             {% endfor %}
         </div>
     </div>
 
     <script>
-        // Smooth scroll to top when new item added
-        document.querySelector(".add-btn").addEventListener("click", function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Enhanced interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add subtle parallax effect to background based on mouse movement
+            document.addEventListener('mousemove', function(e) {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                
+                document.body.style.backgroundPosition = `
+                    ${50 + xAxis}% ${50 + yAxis}%, 
+                    ${50 - xAxis}% ${50 - yAxis}%, 
+                    ${50 + xAxis * 1.5}% ${50 + yAxis * 1.5}%
+                `;
+            });
+            
+            // Add click effect to items
+            const items = document.querySelectorAll('.item');
+            items.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+            
+            // Add ripple effect to button
+            const button = document.querySelector('.add-btn');
+            button.addEventListener('click', function(e) {
+                // Smooth scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Ripple effect
+                const x = e.clientX - this.getBoundingClientRect().left;
+                const y = e.clientY - this.getBoundingClientRect().top;
+                
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
         });
     </script>
 </body>
