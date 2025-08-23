@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
-from .models import Recycleable, Phone
+from .models import Recycleable, Phone, Item, Dropoff_request
 from inference_sdk import InferenceHTTPClient
 from django.http import HttpResponse
 import uuid
@@ -36,9 +36,10 @@ def login_view(request):
         if user is not None:
             user.save()
             login(request, user)
-            if request.user.is_staff:
+            if user.is_staff:
                 return redirect('recycler_home')
-            return redirect('home')
+            else:
+                return redirect('home')
         else:
             return render(request, 'main/login.html', {'error': 'Invalid email id or password'})
     else:
@@ -96,17 +97,36 @@ def create_item(request):
                     f.write(chunk)
 
             # Save the image metadata in the database
-            form_save = Recycleable(user = request.user, image=f"images/{filename}", quantity = quantity)
-            form_save.save()
             prediction = image_predicter(image_path)
+            item = Item.objects.filter(catagory=prediction)
+            form_save = Recycleable(user = request.user, image=f"images/{filename}", quantity = quantity, item = item[0])
+            form_save.save()
             html_content = "<h2>The given image is of a "+prediction+"</h2>"
             return HttpResponse(html_content)
             # return redirect('list_view')
     else:
         return render(request, 'main/form.html')
 
+@login_required
+def item_detail(request,item_id):
+    item = get_object_or_404(Item, pk=item_id)
+    # pk is the primary key, which is usually 'id' by default
+    context = {'data': item}
+    return render(request, 'main/item_detail.html', context)
+
+# @login_required
+# def request_dropoff(request):
+
 
 @staff_member_required
 def recycler_home(request):
     return render(request, 'main/recycler_dash.html')
+
+@staff_member_required
+def recycler_list(request):
+    dropoff = Dropoff_request.objects.filter(recycler__user=request.user, dropoff_accepted=False)
+    process = Dropoff_request.objects.filter(recycler__user=request.user, dropoff_accepted=True)
+    context = {'dropoff':dropoff,'process':process}
+    return render(request, 'main/recycler_list.html',context)
+
 

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycler List</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">Offer and Tracking</div>
+        </div>
+
+        <!-- Item List -->
+        <div id="container-dropoff">
+            <h2>Offers</h2>
+            {% for item in dropoff %}
+                <div class="item">
+                    <div class="image-container">
+                        <img src="{{ item.item.image.url }}" alt="Item Image">
+                    </div>
+                    <div class="item-details">
+                        <h3>{{ item.item.item.catagory }}</h3>
+                        <small>Listed on: {{ item.item.listed_on }}</small>
+                    </div>
+                    <div class="options">
+                        <button onclick="">Accept</button>
+                        <button onclick="">Reject</button>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty">
+                    <p>No items in this list yet</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div id="container-process">
+            <h2>Tracking</h2>
+            {% for item in process %}
+                <div class="item">
+                    <div class="image-container">
+                        <img src="{{ item.item.image.url }}" alt="Item Image">
+                    </div>
+                    <div class="item-details">
+                        <h3>{{ item.item.item.catagory }}</h3>
+                        <small>Listed on: {{ item.item.listed_on }}</small>
+                    </div>
+                    <div class="options">
+                        <button onclick="">Mark as Done</button>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty">
+                    <p>No items in this list yet</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

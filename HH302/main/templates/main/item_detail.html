@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My List - Enhanced Theme</title>
+    <title>Price Prediction</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -14,6 +14,7 @@
             --muted: #d1d5db;
             --primary: #3498db;
             --secondary: #27ae60;
+            --accent: #ff9800;
             --radius: 16px;
             --shadow: 0 8px 30px rgba(0,0,0,0.25);
         }
@@ -31,6 +32,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
+            align-items: center;
             padding: 20px;
             overflow-x: hidden;
             position: relative;
@@ -39,7 +41,7 @@
         /* Animated background gradient */
         body::before {
             content: "";
-            position: absolute;
+            position: fixed;
             top:0; left:0; right:0; bottom:0;
             background: radial-gradient(circle at 20% 30%, #1e3c72, transparent 60%),
                         radial-gradient(circle at 80% 70%, #2a5298, transparent 60%),
@@ -55,7 +57,7 @@
 
         .container {
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             backdrop-filter: blur(14px);
             background: rgba(30, 30, 30, 0.8);
             border: 1px solid rgba(255,255,255,0.15);
@@ -66,7 +68,7 @@
         }
 
         /* Header */
-        .header {
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -82,9 +84,9 @@
             color: #fff;
         }
 
-        .add-btn {
+        .nav-btn {
             padding: 12px 24px;
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            background: linear-gradient(135deg, #3498db, #4facfe);
             color: white;
             border: none;
             border-radius: var(--radius);
@@ -98,7 +100,7 @@
             animation-delay: 0.5s;
         }
 
-        .add-btn::after {
+        .nav-btn::after {
             content: "";
             position: absolute;
             top:0; left:-100%; width:100%; height:100%;
@@ -107,105 +109,115 @@
             transition: 0.5s;
         }
 
-        .add-btn:hover::after {
+        .nav-btn:hover::after {
             left: 100%;
         }
 
-        .add-btn:hover {
+        .nav-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.25);
         }
 
-        /* Item Cards */
-        .item {
+        /* Main content */
+        main {
             display: flex;
-            align-items: center;
-            gap: 20px;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .section {
             backdrop-filter: blur(10px);
             background: var(--card-bg);
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 25px;
             border-radius: var(--radius);
-            margin-bottom: 20px;
             box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 0;
             animation: fadeUp 1s ease forwards;
         }
 
-        .item:nth-child(1) {
+        .section:nth-child(1) {
             animation-delay: 0.6s;
         }
 
-        .item:nth-child(2) {
+        .section:nth-child(2) {
             animation-delay: 0.8s;
         }
 
-        .item:nth-child(3) {
+        .section:nth-child(3) {
             animation-delay: 1.0s;
         }
 
-        .item:hover {
+        .section:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
-        .image-container {
-            width: 80px;
-            height: 80px;
-            flex-shrink: 0;
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .item:hover .image-container {
-            transform: scale(1.05);
-        }
-
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .item-details {
-            flex: 1;
-        }
-
-        .item-details h3 {
-            font-size: 1.2rem;
-            color: #fff;
-            margin-bottom: 8px;
+        .section h2 {
+            color: var(--text-light);
+            margin-bottom: 15px;
             font-weight: 600;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .item-details p {
-            font-size: 0.95rem;
+        .section h2::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .price-section h2::before {
+            background: #ff9800;
+        }
+
+        .recycler-section h2::before {
+            background: #4caf50;
+        }
+
+        .details-section h2::before {
+            background: #2196f3;
+        }
+
+        .price-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff9800;
+            text-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .info-label {
+            font-size: 0.9rem;
             color: var(--muted);
             margin-bottom: 5px;
         }
 
-        .item-details small {
-            color: #a7f3d0;
-            font-size: 0.8rem;
-        }
-
-        /* Empty State */
-        .empty {
-            text-align: center;
-            color: var(--muted);
+        .info-value {
             font-size: 1.1rem;
-            padding: 40px 20px;
-            backdrop-filter: blur(10px);
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            border: 1px solid rgba(255,255,255,0.1);
-            opacity: 0;
-            animation: fadeUp 1s ease forwards;
-            animation-delay: 0.5s;
+            font-weight: 600;
+            color: var(--text-light);
         }
 
         /* Animations */
@@ -219,13 +231,19 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
             }
             
-            .header {
+            header {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
@@ -235,62 +253,44 @@
                 font-size: 1.5rem;
             }
 
-            .add-btn {
+            .nav-btn {
                 padding: 10px 20px;
                 font-size: 0.9rem;
             }
 
-            .item {
-                flex-direction: column;
-                align-items: flex-start;
-                text-align: center;
-                gap: 15px;
+            .section {
+                padding: 20px;
             }
 
-            .image-container {
-                width: 100%;
-                height: 180px;
-                align-self: center;
+            .price-display {
+                font-size: 2rem;
             }
             
-            .item-details {
-                width: 100%;
-            }
-
-            .item-details h3 {
-                font-size: 1.3rem;
+            .info-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
+        <header>
             <div class="logo">E-Waste Tracker</div>
-            <button class="add-btn" onclick="location.href='/home/mylist/create'">+ Add Item</button>
-        </div>
-
-        <!-- Item List -->
-        <div id="container-tasks">
-            {% for item in data %}
-            <a href="/item/{{ item.id }}">
-                <div class="item">
-                    <div class="image-container">
-                        <img src="{{ item.image.url }}" alt="Item Image">
-                    </div>
-                    <div class="item-details">
-                        <a href="/item/{{ item.id }}"><h3>{{ item.item.catagory }}</h3></a>
-                        <small>Listed on: {{ item.listed_on }}</small>
-                    </div>
-                </div>
+            <button class="nav-btn" onclick="location.href = '/home'">Back to Dashboard</button>
+        </header>
+        <main>
+            <div class="section price-section">
+                <h2>Price Prediction</h2>
+                <div class="price-display">{{ data.prediction_price }}</div>
+                <p>This is the estimated value of your e-waste item based on current market rates and condition assessment.</p>
+            </div>
+            <div class="section recycler-section">
+                <h2>Nearest Recycler</h2>
+                
+            </div>
             
-            {% empty %}
-                <div class="empty">
-                    <p>No items in your list yet</p>
-                </div>
-            {% endfor %}
-        </div>
+            </div>
+        </main>
     </div>
 
     <script>
@@ -308,24 +308,9 @@
                 `;
             });
             
-            // Add click effect to items
-            const items = document.querySelectorAll('.item');
-            items.forEach(item => {
-                item.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
-                });
-            });
-            
             // Add ripple effect to button
-            const button = document.querySelector('.add-btn');
+            const button = document.querySelector('.nav-btn');
             button.addEventListener('click', function(e) {
-                // Smooth scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                
-                // Ripple effect
                 const x = e.clientX - this.getBoundingClientRect().left;
                 const y = e.clientY - this.getBoundingClientRect().top;
                 
@@ -339,6 +324,17 @@
                     ripple.remove();
                 }, 600);
             });
+            
+            // Add animation to price display
+            const priceDisplay = document.querySelector('.price-display');
+            if (priceDisplay) {
+                setTimeout(() => {
+                    priceDisplay.style.animation = 'pulse 1s ease-in-out';
+                    setTimeout(() => {
+                        priceDisplay.style.animation = '';
+                    }, 1000);
+                }, 1500);
+            }
         });
     </script>
 </body>

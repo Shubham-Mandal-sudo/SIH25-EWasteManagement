@@ -9,5 +9,7 @@ urlpatterns = [
     path('home/', views.home_view, name='home'),
     path('home/mylist/',views.list_view, name = 'list_view'),
     path('home/mylist/create/',views.create_item, name='create_item'),
-    path('recycler/',views.recycler_home, name='recycler'),
+    path('item/<int:item_id>/',views.item_detail,name = 'item_detail'),
+    path('recycler/',views.recycler_home, name='recycler_home'),
+    path('recycler/mylist/', views.recycler_list, name = 'recycler_list')
 ]
