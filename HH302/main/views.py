@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
-from .models import Recycleable, Phone, Item, Dropoff_request
+from .models import Recycleable, Phone, Item, Dropoff_request, Recycler_details
 from inference_sdk import InferenceHTTPClient
 from django.http import HttpResponse
 import uuid
@@ -109,14 +109,22 @@ def create_item(request):
 
 @login_required
 def item_detail(request,item_id):
-    item = get_object_or_404(Item, pk=item_id)
-    # pk is the primary key, which is usually 'id' by default
-    context = {'data': item}
-    return render(request, 'main/item_detail.html', context)
+    if request.method == 'POST':
+        vender_code = request.POST.get("vender_code")
+        user = User.objects.get(id = vender_code)
+        recycler = Recycler_details.objects.get(user = user)
+        item = get_object_or_404(Recycleable, pk=item_id)
+        dropoff = Dropoff_request(user = request.user, recycler = recycler, item = item)
+        dropoff.save()
+    else:   
+        item = get_object_or_404(Recycleable, pk=item_id)
+        # pk is the primary key, which is usually 'id' by default
+        context = {'data': item}
+        return render(request, 'main/item_detail.html', context)
 
 # @login_required
 # def request_dropoff(request):
-
+    
 
 @staff_member_required
 def recycler_home(request):
